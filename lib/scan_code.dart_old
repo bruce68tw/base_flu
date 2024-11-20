@@ -7,7 +7,7 @@ import 'services/widget.dart';
 
 //scan qrCode & barCode
 class ScanCode extends StatefulWidget {
-  const ScanCode({Key? key, required this.title}) : super(key: key);
+  const ScanCode({super.key, required this.title});
   final String title;
 
   @override

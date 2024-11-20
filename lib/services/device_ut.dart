@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 //import 'package:geolocator/geolocator.dart';
 //import 'package:airplane_mode_checker/airplane_mode_checker.dart';
 //import 'package:package_info_plus/package_info_plus.dart';
-import 'package:package_info/package_info.dart';
-//import '../models/gps_dto.dart';
+//import 'package:package_info/package_info.dart';
+import '../models/gps_dto.dart';
 
 //static class, cannot use _Fun
 class DeviceUt {
@@ -17,10 +17,11 @@ class DeviceUt {
   }
   */
 
-  /* temp remark
   /// get gps position
   /// tailLen: 經緯度小數點後面字串長度, 不指定則使用預設
   static Future<GpsDto> getGpsA([int? tailLen]) async {
+    return GpsDto(longitude: '0', latitude: '0');
+    /* temp remark
     var status = await Geolocator.isLocationServiceEnabled();
     if (status) {
       var auth = await Geolocator.checkPermission();
@@ -52,8 +53,8 @@ class DeviceUt {
     } else {
       return GpsDto(error: 'GPS Service Disabled.');
     }
+    */
   }
-  */
 
   static String _gpsCutTail(String source, String find, int tailLen) {
     var pos = source.indexOf(find);
@@ -85,8 +86,10 @@ class DeviceUt {
     return (Theme.of(context).platform == TargetPlatform.android);
   }
 
+  /* package_info 會造成編譯錯誤 !!
   static Future<String> getVersionA() async {
     var info = await PackageInfo.fromPlatform();
     return info.version;
   }
+  */
 } //class

@@ -1,7 +1,9 @@
 //no easy way to export directory !!
+//只有外部程式可以載入此檔案, 否則會造成無窮迴圈 !!
+
 export 'bool_ut.dart';
-export 'canvas_ut.dart';
-export 'crud_read.dart';
+//export 'canvas_ut.dart_old';
+//export 'crud_read.dart_old';
 export 'date_ut.dart';
 export 'db_ut.dart';
 export 'device_ut.dart';
@@ -22,4 +24,4 @@ export 'widget.dart';
 export 'sql_ut.dart';
 export 'page_ut.dart';
 export 'object_ut.dart';
-export 'video_ut.dart';
+//export 'video_ut.dart_old';

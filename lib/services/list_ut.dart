@@ -1,7 +1,6 @@
 
 import 'package:collection/collection.dart';  //for firstWhereOrNull
-import '../models/id_str_dto.dart';
-import '../models/id_str2_dto.dart';
+import '../models/all.dart';
 import 'fun_ut.dart';
 import 'str_ut.dart';
 

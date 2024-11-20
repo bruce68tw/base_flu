@@ -6,8 +6,11 @@ import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:archive/archive.dart';
 import 'package:http/http.dart' as http;
-import 'package:base_flu/all.dart';
-import 'package:http_parser/http_parser.dart'; //need !!
+import 'package:http_parser/http_parser.dart';
+import 'fun_ut.dart';
+import 'log_ut.dart';
+import 'str_ut.dart';
+import 'tool_ut.dart'; //need !!
 
 //static class
 class HttpUt {
@@ -18,8 +21,10 @@ class HttpUt {
     _token = token;
   }
 
-  //get api uri
-  //json must be <String, String> or cause error !!
+  /*
+   get api uri
+   @param json 傳入資料, 格式為 Map<String, dynamic>?
+  */
   static Uri _apiUri(String action, [Map<String, dynamic>? json]) {
     if (FunUt.logHttpUrl) {
       LogUt.info(FunUt.apiServer + '/' + action);

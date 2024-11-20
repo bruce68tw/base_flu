@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'all.dart';
 
 class Sqlite extends StatefulWidget {
-  const Sqlite({Key? key}) : super(key: key);
+  const Sqlite({super.key});
   //final String dbName;
 
   @override

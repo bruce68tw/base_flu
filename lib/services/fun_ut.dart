@@ -1,8 +1,7 @@
+//最底層
 // ignore_for_file: prefer_interpolation_to_compose_strings
-
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'str_ut.dart';
 
 //static class, cannot use _Fun
 class FunUt {
@@ -63,7 +62,7 @@ class FunUt {
 
   /// initial
   static Future init(bool isHttps, String apiServer) async {
-    if (!StrUt.isEmpty(FunUt.apiServer)) return;
+    if (FunUt.apiServer != '') return;
 
     FunUt.isHttps = isHttps;
     FunUt.apiServer = apiServer;

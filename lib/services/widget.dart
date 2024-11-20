@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import '../models/all.dart';
-import 'all.dart';
+import 'date_ut.dart';
+import 'fun_ut.dart';
+import 'list_ut.dart';
+import 'str_ut.dart';
 
 //static class
 class WG {

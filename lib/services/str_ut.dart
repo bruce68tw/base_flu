@@ -108,9 +108,9 @@ class StrUt {
         .substring(0, 10);
   }
 
-  //�N�r�ꤤ���Ʀr����� for �a�}�d��
+  //將字串中的數字轉全形 for 地址查詢
   static String toFullType(String input) {
-    var list = ['��', '��', '��', '��', '��', '��', '��', '��', '��', '��'];
+    var list = ['０','１','２','３','４','５','６','７','８','９'];
     var len = input.length;
     var result = '';
     for (var i = 0; i < len; i++) {
@@ -122,7 +122,7 @@ class StrUt {
   }
 
   /*
-  //�r�������
+  //字串轉全形
   static String toFullType(String str) {
     var c = str.split(''); //'.ToCharArray();
     for (int i = 0; i < c.Length; i++)

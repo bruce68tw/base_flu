@@ -32,7 +32,7 @@ class SqlUt {
         result.order = "";
     } else {
         result.order = useSquare 
-          ? "Order " + sql.substring(order + 7).trim() 
+          ? "Order ${sql.substring(order + 7).trim()}" 
           : sql.substring(order).trim();
         end = order - 1;
     }
@@ -41,7 +41,7 @@ class SqlUt {
         result.group = "";
     } else {
         result.group = useSquare 
-          ? "Group " + sql.substring(group + 7, end).trim() 
+          ? "Group ${sql.substring(group + 7, end).trim()}" 
           : sql.substring(group, end).trim();
         end = group - 1;
     }
@@ -50,13 +50,13 @@ class SqlUt {
         result.where = "";
     } else {
         result.where = useSquare 
-          ? "Where " + sql.substring(where + 7, end).trim() 
+          ? "Where ${sql.substring(where + 7, end).trim()}" 
           : sql.substring(where, end).trim();
         end = where - 1;
     }
 
     if (useSquare) {
-        result.from = "From " + sql.substring(from + 6, end).trim();
+        result.from = "From ${sql.substring(from + 6, end).trim()}";
         result.select = sql..substring(0, from).trim()..substring(7);     //exclude "Select" word !!
     } else {
         result.from = sql.substring(from, end).trim();

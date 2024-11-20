@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'str_ut.dart';
 
 //static class

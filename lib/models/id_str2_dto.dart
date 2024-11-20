@@ -5,7 +5,7 @@ class IdStr2Dto extends IdStrDto {
   //String str;
   String ext;
 
-  IdStr2Dto({required String id, required String str, required this.ext}) : super(id:id, str:str);
+  IdStr2Dto({required super.id, required super.str, required this.ext});
 
   ///convert json to model, static for be parameter !!
   static IdStr2Dto fromJson(Map json){

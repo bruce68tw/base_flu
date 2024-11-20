@@ -1,6 +1,5 @@
 import 'dart:convert';
-import '../models/id_str2_dto.dart';
-import '../models/id_str_dto.dart';
+import '../models/all.dart';
 import 'fun_ut.dart';
 
 //static class

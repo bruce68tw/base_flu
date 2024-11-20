@@ -106,6 +106,16 @@ class PagerSrv {
     );
   }
 
+  //傳回格式與 getDtJson 不同
+  Map<String, dynamic> getDtJson2([String findJson = '']) {
+    return {
+      'start': (_nowPage - 1) * _pageRows,
+      'length': _pageRows,
+      'recordsFiltered': _rowCount,
+      'findJson': findJson,
+    };
+  }
+
   Widget getWidgetByDto(PagerDto pagerDto) {
     return getWidget(pagerDto.recordsFiltered);
   }
@@ -159,9 +169,9 @@ class PagerSrv {
     return Padding(
         padding: const EdgeInsets.only(top: 10),
         child: Row(
-          children: btns,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
+          children: btns,
         ));
   }
 

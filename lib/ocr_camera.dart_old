@@ -10,8 +10,7 @@ import 'services/widget.dart';
 
 //ocr camera image to text
 class OcrCamera extends StatefulWidget {
-  const OcrCamera({Key? key, required this.title, this.lineSep = '\n'})
-      : super(key: key);
+  const OcrCamera({super.key, required this.title, this.lineSep = '\n'});
   final String title;
   final String lineSep;
 
@@ -20,7 +19,7 @@ class OcrCamera extends StatefulWidget {
 }
 
 class OcrCameraState extends State<OcrCamera> {
-  bool _isOk = false;
+  final bool _isOk = false;
   bool _readStream = false; //控制ImageStream,否則會OutOfMemory !!
   CameraController? cameraCtrl;
   //late String _wordSep;   //文字分隔符號
@@ -31,8 +30,8 @@ class OcrCameraState extends State<OcrCamera> {
   final _textRecoger = TextRecognizer(script: TextRecognitionScript.latin);
 
   //辨視結果判斷2次
-  String _resultText = '';
-  String _resultText2 = '';
+  final String _resultText = '';
+  final String _resultText2 = '';
 
   @override
   void initState() {

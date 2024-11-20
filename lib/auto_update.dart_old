@@ -70,8 +70,7 @@ class AutoUpdateCtrl extends GetxController {
 //自動改版 for android/ios
 class AutoUpdate extends StatefulWidget {
   const AutoUpdate(
-      {Key? key, required this.title, required this.msg, required this.apkUrl})
-      : super(key: key);
+      {super.key, required this.title, required this.msg, required this.apkUrl});
   final String title;
   final String msg;
   final String apkUrl;

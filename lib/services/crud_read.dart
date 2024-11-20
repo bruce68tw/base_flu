@@ -2,7 +2,14 @@
 import 'package:collection/collection.dart';
 import '../enums/all.dart';
 import '../models/all.dart';
-import 'all.dart';
+import 'date_ut.dart';
+import 'db_ut.dart';
+import 'json_ut.dart';
+import 'log_ut.dart';
+import 'object_ut.dart';
+import 'page_ut.dart';
+import 'sql_ut.dart';
+import 'str_ut.dart';
 
 //pager service
 class CrudRead {
@@ -44,8 +51,8 @@ class CrudRead {
 
       if (where != ""){
           sqlDto.where = (sqlDto.where == "") 
-              ? "Where " + where 
-              : sqlDto.where + " And " + where;
+              ? "Where $where" 
+              : "${sqlDto.where} And $where";
       }
       //#endregion
 
@@ -53,14 +60,11 @@ class CrudRead {
       //List<Map<String, dynamic>>? rows;
       //var db = GetDb();
       var rowCount = dtDto.recordsFiltered;
-      var group = (sqlDto.group == "") ? "" : " " + sqlDto.group; //remove last space
+      var group = (sqlDto.group == "") ? "" : " ${sqlDto.group}"; //remove last space
       String sql;
       if (rowCount < 0)
       {
-          sql = "Select Count(*) as _count " +
-              sqlDto.from + " " +
-              sqlDto.where +
-              group;
+          sql = "Select Count(*) as _count ${sqlDto.from} ${sqlDto.where}$group";
           var row = await DbUt.getJsonA(sql, _sqlArgs); //for log carrier
           if (row == null) {
             return {
@@ -124,7 +128,7 @@ class CrudRead {
       var where = "";
       var and = "";
       if (items != null && items.isNotEmpty && findJson != null) {
-          var table = StrUt.isEmpty(readDto.tableAs) ? "" : (readDto.tableAs + ".");
+          var table = StrUt.isEmpty(readDto.tableAs) ? "" : ("${readDto.tableAs}.");
           //foreach 不能使用 continue !!
           for(var prop in findJson.entries) {
               //skip if empty
@@ -149,12 +153,12 @@ class CrudRead {
                       //find item
                       item = items.firstWhereOrNull((a) => a.fid == key2);
                       if (item == null) {
-                          LogUt.error("no fid = " + key2);
+                          LogUt.error("no fid = $key2");
                           return _errorCode;
                       }
                   } else {
                       //else case, skip & log error
-                      LogUt.error("no fid = " + prop.key);
+                      LogUt.error("no fid = ${prop.key}");
                       return _errorCode;
                   }
               }
@@ -168,13 +172,13 @@ class CrudRead {
                   okDates.add(item.fid);
 
                   //get where
-                  var fid2 = item.fid + "2";
+                  var fid2 = "${item.fid}2";
                   var hasDate1 = ObjectUt.notEmpty(findJson[item.fid]);
                   var hasDate2 = ObjectUt.notEmpty(findJson[fid2]);
                   if (hasDate1 && hasDate2) {  //case of has 2nd field, then query start/end
                       itemWhere = "($col is Null Or $col Between $item.fid And $fid2)";
-                      _addArg(item.fid, DateUt.csToDt(value.toString() + " 00:00:00"));
-                      _addArg(fid2, DateUt.csToDt(findJson[fid2].toString() + " 23:59:59"));
+                      _addArg(item.fid, DateUt.csToDt("$value 00:00:00"));
+                      _addArg(fid2, DateUt.csToDt("${findJson[fid2]} 23:59:59"));
                   } else if (hasDate1) { //has start date, then query this date after
                       itemWhere = "($col is Null Or $col >= $item.fid)";
 
@@ -186,14 +190,14 @@ class CrudRead {
 
                       //Datetime field only get date part, type is string
                       var date1 = DateUt.csToDt(value.toString());
-                      _addArg(fid2, StrUt.getLeft(date1.toString(), " ") + " 23:59:59");
+                      _addArg(fid2, "${StrUt.getLeft(date1.toString(), " ")} 23:59:59");
                   }
               }
               //2 date fields, if input one date then must in range, if input 2 dates, then must be intersection with start/end
               //ex: StartDate, EndDate, no consider item.op !!
               else if (item.type == QitemTypeEnum.date2) {
                   //if Date2 field not set "Other", log error & skip
-                  var fid2 = item.fid + "2";
+                  var fid2 = "${item.fid}2";
                   var col2 = item.other;
                   if (StrUt.isEmpty(col2)) {
                       LogUt.error("no Other field for Date2 (${item.fid})");
@@ -208,7 +212,7 @@ class CrudRead {
                   var hasDate2 = ObjectUt.notEmpty(findJson[fid2]);
                   if (hasDate1 && hasDate2) {  //case of 2nd field, then query start/end
                       itemWhere = "(($col is Null Or $col <= $fid2) And ($col2 is Null Or $col2 >= ${item.fid}))";
-                      _addArg(fid2, StrUt.getLeft(DateUt.csToDt(findJson[fid2].toString()).toString(), " ") + " 23:59:59");
+                      _addArg(fid2, "${StrUt.getLeft(DateUt.csToDt(findJson[fid2].toString()).toString(), " ")} 23:59:59");
                       _addArg(item.fid, StrUt.getLeft(DateUt.csToDt(value.toString()).toString(), " "));
                   } else if (hasDate1) { //only start date, then query bigger than this date
                       itemWhere = "($col2 is Null or $col2 >= ${item.fid})";
@@ -221,16 +225,16 @@ class CrudRead {
 
                       //get date part of Datetime
                       var date1 = DateUt.csToDt(value.toString());
-                      _addArg(fid2, StrUt.getLeft(date1.toString(), " ") + " 23:59:59");
+                      _addArg(fid2, "${StrUt.getLeft(date1.toString(), " ")} 23:59:59");
                   }
               } else if (item.op == ItemOpEstr.equal) {
-                  itemWhere = col + "=@" + item.fid;
+                  itemWhere = "$col=@${item.fid}";
                   _addArg(item.fid, value);
               } else if (item.op == ItemOpEstr.like) {
-                  itemWhere = col + " like @" + item.fid;
+                  itemWhere = "$col like @${item.fid}";
                   _addArg(item.fid, value + "%");
               } else if (item.op == ItemOpEstr.notLike) {
-                  itemWhere = col + " not like @" + item.fid;
+                  itemWhere = "$col not like @${item.fid}";
                   _addArg(item.fid, value + "%");
               } else if (item.op == ItemOpEstr.in_) {
                   //"in" has different args type !!
@@ -243,14 +247,14 @@ class CrudRead {
 
                       var fid = item.fid + i.toString();
                       _addArg(fid, values[i]);
-                      names.add("@" + fid);
+                      names.add("@$fid");
                   }
                   if (names.isEmpty) continue;
 
-                  itemWhere = col + " in (" + names.join(",") + ")";
+                  itemWhere = "$col in (${names.join(",")})";
               } else if (item.op == ItemOpEstr.like2) {
-                  _addArg(item.fid, "%" + value.toString() + "%");
-                  itemWhere = col + " Like @" + item.fid;
+                  _addArg(item.fid, "%$value%");
+                  itemWhere = "$col Like @${item.fid}";
               } else if (item.op == ItemOpEstr.likeList) {
                   var where2 = "";
                   var or = "";
@@ -259,13 +263,13 @@ class CrudRead {
                       if (StrUt.isEmpty(values[i])) continue;
 
                       var fid = item.fid + i.toString();
-                      where2 += or + col + " Like @" + fid;
+                      where2 += "$or$col Like @$fid";
                       or = " Or ";
-                      _addArg(fid, values[i] + "%");
+                      _addArg(fid, "${values[i]}%");
                   }
                   if (where2 == "") continue;
 
-                  itemWhere = "(" + where2 + ")";
+                  itemWhere = "($where2)";
               } else if (item.op == ItemOpEstr.likeCols || item.op == ItemOpEstr.like2Cols) {
                   var pre = (item.op == ItemOpEstr.like2Cols) ? "%" : "";
                   var where2 = "";
@@ -274,31 +278,31 @@ class CrudRead {
                   for (var col2 in cols) {
                       if (StrUt.isEmpty(col2)) continue;
 
-                      where2 += or + col2 + " Like @" + item.fid;
+                      where2 += "$or$col2 Like @${item.fid}";
                       or = " Or ";
                   }
                   if (where2 == "") continue;
 
-                  _addArg(item.fid, pre + value + "%");
-                  itemWhere = "(" + where2 + ")";
+                  _addArg(item.fid, "${pre + value}%");
+                  itemWhere = "($where2)";
               } else if (item.op == ItemOpEstr.is_) {
                   if (value.toString() != "1") {
-                      itemWhere = col + " is Null";
+                      itemWhere = "$col is Null";
                   } else if (value.toString() != "0") {
-                      itemWhere = col + " is not Null";
+                      itemWhere = "$col is not Null";
                   } else {
-                      itemWhere = col + " is " + value;
+                      itemWhere = "$col is " + value;
                   }
               } else if (item.op == ItemOpEstr.isNull) {
                   if (value.toString() != "1") continue;                  
-                  itemWhere = col + " is Null";
+                  itemWhere = "$col is Null";
               } else if (item.op == ItemOpEstr.notNull) {
                   if (value.toString() != "1") continue;
-                  itemWhere = col + " is not Null";
+                  itemWhere = "$col is not Null";
               } else if (item.op == ItemOpEstr.userDefined) {
-                  itemWhere = "(" + col + " " + value.toString() + ")";
+                  itemWhere = "($col $value)";
               } else if (item.op == ItemOpEstr.inRange) {
-                  var fid2 = item.fid + "2";
+                  var fid2 = "${item.fid}2";
                   var hasNum1 = ObjectUt.notEmpty(findJson[item.fid]);
                   var hasNum2 = ObjectUt.notEmpty(findJson[fid2]);
 
@@ -317,7 +321,7 @@ class CrudRead {
                   }
               } else {
                   //let it sql wrong!!
-                  itemWhere = col + " " + item.op + " @" + item.fid;
+                  itemWhere = "$col ${item.op} @${item.fid}";
                   _addArg(item.fid, value);
               }
               //#endregion
