@@ -14,6 +14,7 @@ class FunUt {
   static const notEmpty = '不可空白。';
   static const notZero = '不可為0';
   static const onlyNum = '只能輸入數字。';
+  static const timeOut = 60;  //http timeout 秒數
 
   //system config
   static bool logHttpUrl = false;

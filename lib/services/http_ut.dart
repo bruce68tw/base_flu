@@ -144,7 +144,7 @@ class HttpUt {
       if (file == null) {
         resp = await http
             .post(_apiUri(action, arg), headers: headers, body: body)
-            .timeout(const Duration(seconds: 30));
+            .timeout(const Duration(seconds: FunUt.timeOut));
       } else {
         var request = http.MultipartRequest('POST', _apiUri(action, arg));
         request.headers.addAll(headers);
