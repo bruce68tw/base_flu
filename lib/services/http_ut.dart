@@ -19,6 +19,7 @@ class HttpUt {
 
   static void setToken(String token) {
     _token = token;
+    FunUt.isLogin = true;
   }
 
   /*
