@@ -50,14 +50,14 @@ class HttpUt {
   static Future<void> getStrA(BuildContext context, String action, bool jsonArg,
       Map<String, dynamic> json, Function fnOk,
       [File? file, bool showWait = true]) async {
-    await _getRespResultA(
+    await _checkRespResultA(
         context, action, jsonArg, false, json, fnOk, file, showWait);
   }
 
   static Future<void> getJsonA(BuildContext context, String action,
       bool jsonArg, Map<String, dynamic> json, Function fnOk,
       {File? file, bool showWait = true}) async {
-    await _getRespResultA(
+    await _checkRespResultA(
         context, action, jsonArg, true, json, fnOk, file, showWait);
   }
 
@@ -75,7 +75,7 @@ class HttpUt {
   static Future<void> uploadZipA(BuildContext context, String action,
       File? file, Map<String, dynamic> json, bool jsonOut, Function fnOk,
       [bool showWait = true]) async {
-    await _getRespResultA(
+    await _checkRespResultA(
         context, action, false, jsonOut, json, fnOk, file, showWait);
   }
 
@@ -174,7 +174,7 @@ class HttpUt {
   }
 
   //get response result
-  static Future<void> _getRespResultA(BuildContext context, String action,
+  static Future<void> _checkRespResultA(BuildContext context, String action,
       bool jsonArg, bool jsonOut, Map<String, dynamic> json, Function fnOk,
       [File? file, bool showWait = true]) async {
     //get response & check error
@@ -192,8 +192,15 @@ class HttpUt {
 
     //show error msg if any
     var str = utf8.decode(resp.bodyBytes);
-    var json2 = StrUt.toJson(str, showLog: false);
-    var error = (json2 == null) ? _getStrError(str) : _getJsonError(json2);
+    Map<String, dynamic>? json2;
+    var error = '';
+    if (jsonOut) {
+      json2 = StrUt.toJson(str, showLog: false);
+      error = (json2 == null) ? _getStrError(str) : _getJsonError(json2);
+    } else {
+      error = _getStrError(str);
+    }
+
     if (error != '') {
       ToolUt.msg(context, error);
       return;
@@ -210,11 +217,11 @@ class HttpUt {
 
   ///string to error msg
   static String _getStrError(String str) {
-    return StrUt.isEmpty(str)
-        ? ''
-        : (str.substring(0, 2) == FunUt.preError)
-            ? str.substring(2)
-            : '';
+    return (StrUt.notEmpty(str) &&
+            str.length > FunUt.preErrorLen &&
+            str.substring(0, FunUt.preErrorLen) == FunUt.preError)
+        ? str.substring(FunUt.preErrorLen)
+        : '';
   }
 
   /*
