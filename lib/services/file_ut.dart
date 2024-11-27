@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:archive/archive_io.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path; //or will conflict
 import 'fun_ut.dart';
 import 'str_ut.dart';
 
-//static class
+//static class for file & directory
 class FileUt {
   //check file existed under app folder
   static bool exist(String filePath) {
@@ -27,6 +27,19 @@ class FileUt {
   static void createDir(String dirPath) {
     var dir = Directory(dirPath);
     if (!dir.existsSync()) dir.createSync();
+  }
+
+  ///目錄是否存在 fileStem
+  static bool dirHasFileStem(String dirPath, String fileStem) {
+    var dir = Directory(dirPath);
+    if (dir.existsSync()) {
+      return dir
+          .listSync()
+          .any((a) => a is File && path.basename(a.path).contains(fileStem));
+    } else {
+      dir.createSync();
+      return false;
+    }
   }
 
   //await _appDocDirFolder.create(recursive: true);
@@ -53,37 +66,32 @@ class FileUt {
   static String getStem(String filePath) {
     var fileName = basename(filePath);
     var pos = fileName.lastIndexOf('.');
-    return (pos < 0)
-      ? fileName
-      : fileName.substring(0, pos);
+    return (pos < 0) ? fileName : fileName.substring(0, pos);
   }
 
   /// get file extension in lowercase  without '.'
   static String getExt(String filePath) {
     var pos = filePath.lastIndexOf('.');
-    return (pos < 0)
-      ? ''
-      : filePath.substring(pos + 1).toLowerCase();
+    return (pos < 0) ? '' : filePath.substring(pos + 1).toLowerCase();
   }
 
   ///json to image file ext
-  static String jsonToImageExt(Map<String, dynamic>? json, [String fid='FileName']) {
+  static String jsonToImageExt(Map<String, dynamic>? json,
+      [String fid = 'FileName']) {
     if (json == null || StrUt.isEmpty(json[fid])) return '';
 
     String fileName = json[fid];
     var pos = fileName.indexOf('.');
-    return (pos < 0)
-      ? ''
-      : fileName.substring(pos + 1);    
+    return (pos < 0) ? '' : fileName.substring(pos + 1);
   }
 
   /// delete files in directory
   static deleteDirFiles(String dirPath) {
     var dir = Directory(dirPath);
-    if(!dir.existsSync()) return;
-    
+    if (!dir.existsSync()) return;
+
     var files = dir.listSync();
-    for(var file in files){
+    for (var file in files) {
       file.deleteSync();
     }
   }
@@ -104,16 +112,16 @@ class FileUt {
   /// return file list, empty if no files
   static List<String>? zipDir(String fromDir, String toPath) {
     if (!FileUt.dirExist(fromDir)) return null;
-    
+
     var files = Directory(fromDir).listSync();
     if (files.isEmpty) return null;
-    
+
     //var toPath = FunUt.dirTemp + getDirName(fromDir) + '.zip';
     var encoder = ZipFileEncoder();
     encoder.create(toPath);
 
     List<String> result = [];
-    for(var file in files){
+    for (var file in files) {
       var path = file.path;
       encoder.addFile(File(path));
       result.add(basename(path));
@@ -124,13 +132,10 @@ class FileUt {
 
   static String getDirName(String dir) {
     var len = dir.length;
-    if (dir.substring(len - 1) == '/'){
-      dir = dir.substring(0, len -1);
+    if (dir.substring(len - 1) == '/') {
+      dir = dir.substring(0, len - 1);
     }
     var pos = dir.lastIndexOf('/');
-    return (pos < 0)
-      ? dir
-      : dir.substring(pos + 1);
+    return (pos < 0) ? dir : dir.substring(pos + 1);
   }
-
 } //class

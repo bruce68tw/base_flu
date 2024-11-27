@@ -81,8 +81,9 @@ class HttpUt {
         context, action, false, jsonOut, json, fnOk, file, showWait);
   }
 
-  ///download and unzip
-  static Future<void> saveUnzipA(BuildContext context, String action,
+  /// download and unzip
+  /// @param json 後端傳入參數
+  static Future saveUnzipA(BuildContext context, String action,
       Map<String, String> json, String dirSave) async {
     //create folder if need
     var dir = Directory(dirSave);
@@ -199,7 +200,7 @@ class HttpUt {
     if (jsonOut) {
       json2 = StrUt.toJson2(str, showLog: false);
       //若為陣列表示後端傳回多筆
-      if (json2 is! List){
+      if (json2 is! List) {
         error = (json2 == null) ? _getStrError(str) : _getJsonError(json2);
       }
     } else {
