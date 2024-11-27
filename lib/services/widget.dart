@@ -22,6 +22,9 @@ class WG {
   static Text getRedText(String text) {
     return Text(text, style: textStyle(color: Colors.red));
   }
+  static Text getGreenText(String text) {
+    return Text(text, style: textStyle(color: Colors.green));
+  }
 
   /// get text widget with label style
   static Text getLabel(String? label, {Color? color}) {

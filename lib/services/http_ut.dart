@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:archive/archive.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import '../models/all.dart';
 import 'fun_ut.dart';
 import 'log_ut.dart';
 import 'str_ut.dart';
@@ -54,6 +55,7 @@ class HttpUt {
         context, action, jsonArg, false, json, fnOk, file, showWait);
   }
 
+  //可傳回json或jarray
   static Future<void> getJsonA(BuildContext context, String action,
       bool jsonArg, Map<String, dynamic> json, Function fnOk,
       {File? file, bool showWait = true}) async {
@@ -192,11 +194,14 @@ class HttpUt {
 
     //show error msg if any
     var str = utf8.decode(resp.bodyBytes);
-    Map<String, dynamic>? json2;
+    dynamic json2;
     var error = '';
     if (jsonOut) {
-      json2 = StrUt.toJson(str, showLog: false);
-      error = (json2 == null) ? _getStrError(str) : _getJsonError(json2);
+      json2 = StrUt.toJson2(str, showLog: false);
+      //若為陣列表示後端傳回多筆
+      if (json2 is! List){
+        error = (json2 == null) ? _getStrError(str) : _getJsonError(json2);
+      }
     } else {
       error = _getStrError(str);
     }

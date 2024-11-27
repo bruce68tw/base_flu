@@ -1,6 +1,7 @@
 import 'dart:convert';
 import '../models/all.dart';
 import 'fun_ut.dart';
+import 'str_ut.dart';
 
 //static class
 class JsonUt {
@@ -71,6 +72,20 @@ class JsonUt {
 
   static Map<String, dynamic> getError({String? error}) {
       return {"ErrorMsg": error ?? FunUt.systemError};
+  }
+
+  //empty field value to assigned value
+  static String emptyToStr(Map<String, dynamic> json, String fid, String value) {
+      String val2 = json[fid].toString();
+      return StrUt.isEmpty(val2) ? value : val2;
+  }
+  static int emptyToInt(Map<String, dynamic> json, String fid, int value) {
+      String val2 = json[fid].toString();
+      return StrUt.isEmpty(val2) ? value : int.parse(val2);
+  }
+  static bool emptyToBool(Map<String, dynamic> json, String fid, bool value) {
+      String val2 = json[fid].toString();
+      return StrUt.isEmpty(val2) ? value : (val2 == '1');
   }
 
 }//class

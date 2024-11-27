@@ -80,6 +80,16 @@ class StrUt {
     }
   }
 
+  //傳回值可能為 json 或 jarray
+  static dynamic toJson2(String data, {bool showLog = true}) {
+    try {
+      return jsonDecode(data);
+    } on Exception catch (e) {
+      if (showLog) LogUt.error('Error: $e');
+      return null;
+    }
+  }
+
   static int findArray(List<String> list, String value) {
     return list.indexOf(value);
   }
