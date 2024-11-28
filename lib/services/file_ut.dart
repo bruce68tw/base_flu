@@ -26,19 +26,38 @@ class FileUt {
   //dirPath: no tail '/'
   static void createDir(String dirPath) {
     var dir = Directory(dirPath);
-    if (!dir.existsSync()) dir.createSync();
+    if (!dir.existsSync()) dir.createSync(recursive: true);
   }
 
   ///目錄是否存在 fileStem
-  static bool dirHasFileStem(String dirPath, String fileStem) {
+  ///@param fullMatch true(檔名完全相同), false(部分相同)
+  static bool dirHasFileStem(String dirPath, String fileStem, bool fullMatch) {
     var dir = Directory(dirPath);
     if (dir.existsSync()) {
-      return dir
-          .listSync()
-          .any((a) => a is File && path.basename(a.path).contains(fileStem));
+      return fullMatch 
+        ? dir.listSync().any((a) => a is File && path.basename(a.path) == fileStem)
+        : dir.listSync().any((a) => a is File && path.basename(a.path).contains(fileStem));
     } else {
-      dir.createSync();
+      try {
+        dir.createSync(recursive: true);
+      } catch (e) {
+        var aa='aa';
+      }
+      //todo
       return false;
+    }
+  }
+
+  ///目錄是否存在 fileStem
+  ///@param fullMatch true(檔名完全相同), false(部分相同)
+  static FileSystemEntity? dirGetFileByStem(String dirPath, String fileStem, bool fullMatch) {
+    var dir = Directory(dirPath);
+    if (dir.existsSync()) {
+      return fullMatch 
+        ? dir.listSync().firstWhere((a) => a is File && path.basename(a.path) == fileStem)
+        : dir.listSync().firstWhere((a) => a is File && path.basename(a.path).contains(fileStem));
+    } else {
+      return null;
     }
   }
 
@@ -60,11 +79,11 @@ class FileUt {
   }
 
   static String getName(String filePath) {
-    return basename(filePath);
+    return path.basename(filePath);
   }
 
   static String getStem(String filePath) {
-    var fileName = basename(filePath);
+    var fileName = path.basename(filePath);
     var pos = fileName.lastIndexOf('.');
     return (pos < 0) ? fileName : fileName.substring(0, pos);
   }
@@ -122,9 +141,9 @@ class FileUt {
 
     List<String> result = [];
     for (var file in files) {
-      var path = file.path;
-      encoder.addFile(File(path));
-      result.add(basename(path));
+      //var path = file.path;
+      encoder.addFile(File(file.path));
+      result.add(path.basename(file.path));
     }
     encoder.close();
     return result;
