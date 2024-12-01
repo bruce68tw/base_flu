@@ -20,17 +20,43 @@ class FunUt {
   static bool logHttpUrl = false;
 
   //=== style start ===
-  static double fontSize = 18.0;
+  //app bar
+  static double appBarFontSize = 42.0;
+  static Color appBarColor = Colors.black;
+  static Color appBarBgColor = Colors.orange;
+
+  //label、text、input
+  static double textFontSize = 18.0;
+  static Color labelColor = Colors.black;
+  static Color textColorYes = Colors.black;
+  static Color textColorNo = Colors.grey;
+  static Color inputColorYes = Colors.black;
+  static Color inputColorNo = Colors.grey;
   static double errorFontSize = 16.0;
-  static Color textColorEdit = Colors.black;
-  static Color textColorRead = Colors.grey;
+
+  //button
+  static double btnFontSize = 18.0;
+  static Color? btnColorYes;
+  static Color? btnColorNo;
+  static Color? btnBgYes;
+  static Color? btnBgNo;
+
+  //link button
+  static Color? linkBtnColorYes;
+  static Color? linkBtnColorNo;
+
   static double fieldHeight = 45;
   static double fieldHeightLow = 35;
+
+  ///divider height
+  static double dividerH = 15;
+
+
   //=== style end ===
 
   //label, also for inputDecoration
   static TextStyle labelStyle = TextStyle(
-    fontSize: fontSize,
+    fontSize: textFontSize,
     color: Colors.grey,
   );
 
@@ -62,7 +88,7 @@ class FunUt {
   static String dirTemp = '';
 
   /// initial
-  static Future init(bool isHttps, String apiServer) async {
+  static Future initA(bool isHttps, String apiServer) async {
     if (FunUt.apiServer != '') return;
 
     FunUt.isHttps = isHttps;

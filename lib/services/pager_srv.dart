@@ -45,6 +45,7 @@ class PagerSrv {
 
   ///text enabled color
   late Color _textColor;
+
   ///text disabled color
   late Color _textDisColor;
   //late Color _textNowColor;
@@ -64,7 +65,6 @@ class PagerSrv {
       Color textDisColor = Colors.grey,
       Color textNowColor = Colors.white,
       Color btnBgColor = Colors.blue}) {
-
     _fnOnClick = fnOnClick;
     _pageRows = pageRows;
     _numBtns = numBtns;
@@ -97,7 +97,7 @@ class PagerSrv {
   ///get dataTable json object(Map) for find rows at backend
   ///@findJson find json string
   ///@return dataTable json
-  DtDto getDtJson([String findJson = '']) {
+  DtDto getDtDto([String findJson = '']) {
     return DtDto(
       start: (_nowPage - 1) * _pageRows,
       length: _pageRows,
@@ -106,8 +106,8 @@ class PagerSrv {
     );
   }
 
-  //傳回格式與 getDtJson 不同
-  Map<String, dynamic> getDtJson2([String findJson = '']) {
+  ///傳回格式與 getDtJson 不同
+  Map<String, dynamic> getDtJson([String findJson = '']) {
     return {
       'start': (_nowPage - 1) * _pageRows,
       'length': _pageRows,
@@ -122,7 +122,7 @@ class PagerSrv {
 
   Widget getWidget(int rowCount) {
     if (rowCount <= 0) return Container();
-    
+
     _setTotalRows(rowCount);
     //temp remark
     //add '[x]pages' if need
@@ -146,8 +146,10 @@ class PagerSrv {
     bool status;
     if (showFun) {
       status = (_firstPage > 1);
-      btns.add(_getButton(first, _getIcon(Icons.skip_previous, status), status));
-      btns.add(_getButton(prev, _getIcon(Icons.navigate_before, status), status));
+      btns.add(
+          _getButton(first, _getIcon(Icons.skip_previous, status), status));
+      btns.add(
+          _getButton(prev, _getIcon(Icons.navigate_before, status), status));
     }
 
     //2.add num buttons
@@ -218,8 +220,8 @@ class PagerSrv {
     );
   }
 
-  ///set nowPage, firstPage, lastPage
-  ///@fun fun type, default to nowPage
+  ///set nowPage, firstPage, lastPage<br>
+  ///@fun fun type, default to nowPage<br>
   ///@return nowPage is changed or not
   bool _setPageVar([String fun = '']) {
     if (fun == '') fun = _nowPage.toString();
@@ -261,5 +263,4 @@ class PagerSrv {
   void _onClick(String fun) {
     if (_setPageVar(fun)) _fnOnClick();
   }
-
 } //class

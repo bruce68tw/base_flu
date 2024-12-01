@@ -201,7 +201,7 @@ class AutoUpdateState extends State<AutoUpdate> {
     if (!_isOk) return Container();
 
     return Scaffold(
-        appBar: WG.appBar(widget.title),
+        appBar: WG2.appBar(widget.title),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

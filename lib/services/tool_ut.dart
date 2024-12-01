@@ -135,25 +135,27 @@ class ToolUt {
     Navigator.pop(context, msg);
   }
 
-  //open form
-  static void openForm(BuildContext? context, Widget form, [bool replace = false]) {
-    if (context == null) return;
+  ///open form, 子畫面可以使用WillPopScope+Navigator.pop來傳回值<br>
+  ///@replace true 表示開啟後關閉本身視窗
+  static Future<dynamic> openFormA(BuildContext? context, Widget form, [bool replace = false]) async {
+    if (context == null) return null;
 
     //close waiting first
-    closeWait(context);
+    //closeWait(context);
 
     if (replace){
-      Navigator.pushReplacement(context,
+      return await Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (context) => form),
       );
     } else {
-      Navigator.push(context,
+      return await Navigator.push(context,
         MaterialPageRoute(builder: (context) => form),
       );
     }
   }
 
-  //open form & show msg
+  /*
+  ///open form & show msg
   static Future<String> openFormMsgA(BuildContext context, Widget form) async {
     //close waiting first
     closeWait(context);
@@ -163,7 +165,8 @@ class ToolUt {
     );
     return (msg == null) ? '' : msg.toString();
   }
-    
+  */
+  
   static Future<void> openInputA(BuildContext context, String title, Function fnOnOk) async {
     var ctrl = TextEditingController();
     return showDialog(
