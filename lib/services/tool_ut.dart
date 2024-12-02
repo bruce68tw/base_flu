@@ -141,15 +141,15 @@ class ToolUt {
     if (context == null) return null;
 
     //close waiting first
-    //closeWait(context);
+    closeWait(context);
 
     if (replace){
       return await Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => form),
+        MaterialPageRoute(builder: (context2) => form),
       );
     } else {
       return await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => form),
+        MaterialPageRoute(builder: (context2) => form),
       );
     }
   }

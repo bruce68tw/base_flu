@@ -20,11 +20,13 @@ class FunUt {
   static bool logHttpUrl = false;
 
   //=== style start ===
+  /*
   //app bar
   static double appBarFontSize = 42.0;
   static Color appBarColor = Colors.black;
   static Color appBarBgColor = Colors.orange;
-
+  */
+  
   //label、text、input
   static double textFontSize = 18.0;
   static Color labelColor = Colors.black;

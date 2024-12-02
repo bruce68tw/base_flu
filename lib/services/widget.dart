@@ -10,6 +10,7 @@ import 'str_ut.dart';
 //static class
 //函數參數中括號(有序,選擇性), 大括號(無序,命名)
 class WG {
+  /*
   static AppBar appBar_old(String title) {
     return AppBar(title: Text(title));
   }
@@ -21,6 +22,8 @@ class WG {
       backgroundColor: FunUt.appBarBgColor,
     );
   }
+  */
+
   /// get text widget<br>
   /// color: for status=true only
   static Text textWG(String text, {Color? color, double? fontSize}) {
@@ -177,7 +180,8 @@ class WG {
       style: ElevatedButton.styleFrom(
           foregroundColor: fontColor ?? (status ? FunUt.btnColorYes : FunUt.btnColorNo), 
           backgroundColor: bgColor ?? (status ? FunUt.btnBgYes : FunUt.btnBgNo)), 
-      child: WG.textWG(label, fontSize: FunUt.btnFontSize)); //must be last!!
+      child: WG.textWG(label, fontSize: FunUt.btnFontSize, 
+        color: fontColor ?? (status ? FunUt.btnColorYes : FunUt.btnColorNo))); //must be last!!
   }
 
   ///link button, 無框線、底色<br>
