@@ -182,7 +182,7 @@ class HttpUt {
     //get response & check error
     var resp = await _getRespA(context, action, jsonArg, json, file, showWait);
     if (resp == null) {
-      ToolUt.msg(context, '無法存取遠端資料 !!');
+      ToolUt.msg(context, '無法存取遠端主機 !!');
       return;
     } else if (resp.statusCode == 401) {
       ToolUt.msg(context, '因為長時間閒置, 系統已經離線, 請重新執行這個程式。');

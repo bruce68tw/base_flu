@@ -1,7 +1,10 @@
 //最底層
 // ignore_for_file: prefer_interpolation_to_compose_strings
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 //static class, cannot use _Fun
 class FunUt {
@@ -14,7 +17,7 @@ class FunUt {
   static const notEmpty = '不可空白。';
   static const notZero = '不可為0';
   static const onlyNum = '只能輸入數字。';
-  static const timeOut = 60; //http timeout 秒數
+  static const timeOut = 300; //http timeout 秒數
 
   //system config
   static bool logHttpUrl = false;
@@ -53,7 +56,9 @@ class FunUt {
   ///divider height
   static double dividerH = 15;
 
+   // HttpClient httpClient = HttpClient(context: context);
 
+  static HttpClient? http2;
   //=== style end ===
 
   //label, also for inputDecoration

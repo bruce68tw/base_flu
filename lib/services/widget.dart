@@ -88,13 +88,20 @@ class WG {
   }
 
   static Column labelText(String label, String text, {Color? textColor}) {
+    return labelTextByWG(
+      WG.textWG(label, color: Colors.grey),
+      WG.textWG(text, color: textColor),
+    );
+  }
+
+  static Column labelTextByWG(Widget label, Widget text) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          WG.textWG(label, color: Colors.grey),
-          WG.textWG(text, color: textColor),
-          WG.divider(),
-        ]);
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        label,
+        text,
+        WG.divider(),
+      ]);
   }
 
   ///for text and input style, consider status
